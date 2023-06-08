@@ -1,21 +1,37 @@
-pipeline {
-    agent any
+pipeline
+{
+  environment
+  {
+    registry = "amit441/demoimage"
+    registryCredential = 'dockerid'
+    dockerImage = ''
+  }
+agent any
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'docker build -t my-java-app .'
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-                    sh 'echo $DOCKER_HUB_CREDENTIALS | docker login -u <Amit441> --password-stdin'
-                    sh 'docker tag my-java-app <Amit441>/my-java-app'
-                    sh 'docker push <Amit441>/my-java-app'
-                }
-            }
-        }
+stages
+{
+  stage('Build image')
+  {
+    steps
+    {
+      script
+      {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+      }
     }
+  }
+  stage('Deploy the image')
+  {
+    steps
+    {
+      script
+      {
+          docker.withRegistry( '',registryCredential )
+          {
+            dockerImage.push()
+          }
+      }
+    }
+  }
+}
 }
