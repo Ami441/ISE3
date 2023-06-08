@@ -11,9 +11,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-                    sh 'echo $DOCKER_HUB_CREDENTIALS | docker login -u <your-docker-hub-username> --password-stdin'
-                    sh 'docker tag my-java-app <your-docker-hub-username>/my-java-app'
-                    sh 'docker push <your-docker-hub-username>/my-java-app'
+                    sh 'echo $DOCKER_HUB_CREDENTIALS | docker login -u <Amit441> --password-stdin'
+                    sh 'docker tag my-java-app <Amit441>/my-java-app'
+                    sh 'docker push <Amit441>/my-java-app'
                 }
             }
         }
