@@ -1,4 +1,4 @@
 FROM openjdk:11
-COPY . /app
+COPY ./app
 WORKDIR /app
 CMD ["java", "PrimeNumbers"]
